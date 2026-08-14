@@ -1,10 +1,20 @@
+# Ce projet n'est PAS exposé directement à Internet : aucun port n'est
+# publié ici. C'est le Caddy "gateway" partagé (voir ~/gateway sur le
+# VPS, hors de ce repo — silvaplana.cloud héberge plusieurs applis sous
+# des chemins différents) qui possède le domaine/le HTTPS et route
+# /fight-rank/* vers le service "frontend" ci-dessous, via le réseau
+# Docker externe "web".
+#
+# Sur le VPS, ce réseau doit exister avant le premier `docker compose up` :
+#   docker network create web
+
 services:
   backend:
     build: ./backend
     restart: unless-stopped
     environment:
       SECRET_KEY: ${SECRET_KEY}
-      ALLOWED_ORIGINS: ${ALLOWED_ORIGINS:-https://sivaplana.cloud}
+      ALLOWED_ORIGINS: ${ALLOWED_ORIGINS:-https://silvaplana.cloud}
     volumes:
       - backend_data:/app/data
       - backend_media:/app/media
@@ -15,13 +25,22 @@ services:
     build:
       context: ./frontend
       args:
-        VITE_BASE: /fight-rank/
-        VITE_API_BASE: /fight-rank
+        VITE_API_URL: /fight-rank/api
     restart: unless-stopped
+    container_name: fight-rank-frontend
+    # Réseau par défaut du projet (communication avec "backend") + réseau
+    # "web" partagé avec le gateway, qui doit pouvoir joindre ce conteneur
+    # par son nom ("fight-rank-frontend", voir container_name ci-dessus).
+    networks:
+      - default
+      - web
     depends_on:
       - backend
-    ports:
-      - "8080:80"
+
+networks:
+  default:
+  web:
+    external: true
 
 volumes:
   backend_data:

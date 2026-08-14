@@ -26,14 +26,12 @@ npm run dev
 
 Ouvrir http://localhost:5173 (le dev server proxy `/api` et `/media` vers `localhost:8000`, voir `vite.config.js`).
 
-## Docker (local ou VPS)
+## Docker / déploiement VPS
 
-```bash
-cp .env.example .env   # renseigner SECRET_KEY et ALLOWED_ORIGINS
-docker compose up -d --build
-```
-
-Le frontend (nginx) écoute sur le port hôte `8080`, sert l'app sous `/fight-rank/` et proxy `/fight-rank/api/` + `/fight-rank/media/` vers le backend. Voir `DEPLOY.md` pour brancher ça derrière le reverse proxy du VPS.
+`docker-compose.yml` ne publie aucun port : il est fait pour tourner derrière
+le Caddy "gateway" partagé du VPS (silvaplana.cloud), qui route
+`/fight-rank/*` vers le conteneur frontend via le réseau Docker `web`. Voir
+`DEPLOY.md` pour la procédure complète.
 
 ## Modèle de données
 

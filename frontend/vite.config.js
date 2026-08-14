@@ -3,10 +3,14 @@ import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
 
 // https://vite.dev/config/
-// VITE_BASE lets us build the app to be served from a sub-path
-// (e.g. https://sivaplana.cloud/fight-rank/) without touching the code.
-export default defineConfig({
-  base: process.env.VITE_BASE || '/',
+export default defineConfig(({ command }) => ({
+  // En build (Dockerfile de prod), l'app est servie sous /fight-rank/ sur
+  // silvaplana.cloud : le Caddy "gateway" partagé du VPS route ce chemin
+  // vers ce conteneur (voir ~/gateway sur le VPS). Sans ce "base", les
+  // fichiers JS/CSS générés seraient référencés depuis la racine du
+  // domaine et ne seraient pas trouvés.
+  // En dev local (`npm run dev`), on reste à la racine pour plus de simplicité.
+  base: command === 'build' ? '/fight-rank/' : '/',
   plugins: [react(), tailwindcss()],
   server: {
     proxy: {
@@ -14,4 +18,4 @@ export default defineConfig({
       '/media': 'http://localhost:8000',
     },
   },
-})
+}))
