@@ -1,0 +1,6 @@
+.venv
+__pycache__
+*.pyc
+fightrank.db
+media/videos/*
+!media/videos/.gitkeep

@@ -1,0 +1,67 @@
+@import "tailwindcss";
+
+:root {
+  --color-bg: #eef1f6;
+  --color-card: #ffffff;
+  --color-navy: #151d33;
+  --color-navy-soft: #2c3a5e;
+  --color-text: #16213e;
+  --color-text-muted: #6b7688;
+  --color-accent: #d7263d;
+  --color-accent-soft: #fde7ea;
+  --color-win: #1f9d55;
+  --color-loss: #d7263d;
+  --color-draw: #8a8f98;
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+  --safe-top: env(safe-area-inset-top, 0px);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  background: #d7dce4;
+  color: var(--color-text);
+  font-family: "Segoe UI", system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* The app is mobile-only: on wider viewports we frame it like a phone
+   instead of letting it stretch full width. */
+.app-shell {
+  max-width: 480px;
+  margin: 0 auto;
+  min-height: 100vh;
+  background: var(--color-bg);
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  box-shadow: 0 0 40px rgba(0, 0, 0, 0.15);
+}
+
+@media (min-width: 481px) {
+  body {
+    display: flex;
+    justify-content: center;
+    padding: 24px 0;
+  }
+  .app-shell {
+    min-height: calc(100vh - 48px);
+    border-radius: 28px;
+    overflow: hidden;
+  }
+}
+
+input,
+select,
+button {
+  font-family: inherit;
+}
