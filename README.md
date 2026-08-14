@@ -33,6 +33,22 @@ le Caddy "gateway" partagé du VPS (silvaplana.cloud), qui route
 `/fight-rank/*` vers le conteneur frontend via le réseau Docker `web`. Voir
 `DEPLOY.md` pour la procédure complète.
 
+## Appli Android
+
+Le frontend React est aussi packagé en appli Android native via [Capacitor](https://capacitorjs.com/) (même code, pas de réécriture) : elle embarque l'UI et appelle l'API de production sur silvaplana.cloud.
+
+```bash
+cd frontend
+npm run android          # build web (base "/", API prod) + copie dans android/
+cd android
+export JAVA_HOME=<jdk21+>   # voir android/README.md si besoin d'un JDK portable
+export ANDROID_HOME=<sdk>
+./gradlew assembleDebug
+# APK : android/app/build/outputs/apk/debug/app-debug.apk
+```
+
+Voir `frontend/android/README.md` pour l'installation détaillée du SDK/JDK et comment mettre l'APK sur le téléphone.
+
 ## Modèle de données
 
 - **Organization** : `name`
