@@ -78,14 +78,14 @@ export function AppProvider({ children }) {
     setFights([])
   }
 
-  async function addFight({ opponentId, result, description, videoFile }) {
+  async function addFight({ opponentId, result, description, videoFile }, onProgress) {
     const form = new FormData()
     form.append('opponent_id', opponentId)
     form.append('result', result)
     form.append('description', description)
     if (videoFile) form.append('video', videoFile)
 
-    const fight = await api.createFight(token, form)
+    const fight = await api.createFight(token, form, onProgress)
     setFights((prev) => [fight, ...prev])
     return fight
   }

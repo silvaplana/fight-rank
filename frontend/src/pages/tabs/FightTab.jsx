@@ -12,6 +12,7 @@ export default function FightTab() {
   const [savedFight, setSavedFight] = useState(null)
   const [error, setError] = useState('')
   const [submitting, setSubmitting] = useState(false)
+  const [progress, setProgress] = useState(0)
 
   function update(field, value) {
     setForm((prev) => ({ ...prev, [field]: value }))
@@ -26,8 +27,9 @@ export default function FightTab() {
     if (!form.opponentId || !form.result || !form.description) return
     setError('')
     setSubmitting(true)
+    setProgress(0)
     try {
-      const fight = await addFight(form)
+      const fight = await addFight(form, setProgress)
       setSavedFight(fight)
       setLocked(true)
     } catch (err) {
@@ -42,6 +44,7 @@ export default function FightTab() {
     setLocked(false)
     setSavedFight(null)
     setError('')
+    setProgress(0)
   }
 
   return (
@@ -122,6 +125,20 @@ export default function FightTab() {
             ))}
           </div>
         </Field>
+
+        {submitting && form.videoFile && (
+          <div>
+            <div className="h-2 rounded-full overflow-hidden" style={{ background: 'rgba(0,0,0,0.08)' }}>
+              <div
+                className="h-full rounded-full transition-all"
+                style={{ width: `${progress}%`, background: 'var(--color-accent)' }}
+              />
+            </div>
+            <p className="text-xs mt-1 text-center" style={{ color: 'var(--color-text-muted)' }}>
+              Envoi de la vidéo… {progress}%
+            </p>
+          </div>
+        )}
 
         {!locked ? (
           <div className="flex flex-col gap-2.5 mt-2">
