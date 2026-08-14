@@ -14,7 +14,7 @@ services:
     restart: unless-stopped
     environment:
       SECRET_KEY: ${SECRET_KEY}
-      ALLOWED_ORIGINS: ${ALLOWED_ORIGINS:-https://silvaplana.cloud}
+      ALLOWED_ORIGINS: ${ALLOWED_ORIGINS:-https://silvaplana.cloud,https://localhost}
     volumes:
       - backend_data:/app/data
       - backend_media:/app/media

@@ -14,8 +14,13 @@ VIDEOS_DIR = MEDIA_DIR / "videos"
 SECRET_KEY = os.getenv("SECRET_KEY", "dev-secret-change-me")
 TOKEN_EXPIRE_HOURS = int(os.getenv("TOKEN_EXPIRE_HOURS", "24"))
 
-# Comma-separated list, e.g. "https://sivaplana.cloud"
-ALLOWED_ORIGINS = os.getenv("ALLOWED_ORIGINS", "http://localhost:5173,http://localhost:5174").split(",")
+# Comma-separated list, e.g. "https://silvaplana.cloud". "https://localhost"
+# is the Capacitor Android app's default WebView origin (see frontend's
+# capacitor.config.json) — it calls the same production API over the
+# network, so it needs to be allowed too, in dev and in prod.
+ALLOWED_ORIGINS = os.getenv(
+    "ALLOWED_ORIGINS", "http://localhost:5173,http://localhost:5174,https://localhost"
+).split(",")
 
 DEFAULT_ORGANIZATION = "ASC Sambo Combat La Ciotat"
 
